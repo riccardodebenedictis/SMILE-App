@@ -14,6 +14,7 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private OkHttpClient client;
     private SpeechRecognizer speechRecognizer;
     private TextToSpeech textToSpeech;
+    private ImageView image_view;
     private Button speak_button;
 
     @Override
@@ -106,6 +108,22 @@ public class MainActivity extends AppCompatActivity {
                                     try {
                                         Toast.makeText(MainActivity.this, response_body.getString("text"), Toast.LENGTH_SHORT).show();
                                         textToSpeech.speak(response_body.getString("text"), TextToSpeech.QUEUE_FLUSH, null, null);
+                                        image_view.setImageIcon(null);
+                                    } catch (JSONException e) {
+                                        Log.e(TAG, "onResponse: " + e.getMessage());
+                                    }
+                                });
+                            } else if (response_body.has("custom")) {
+                                runOnUiThread(() -> {
+                                    try {
+                                        JSONObject custom = response_body.getJSONObject("custom");
+                                        if (custom.has("image")) {
+                                            switch (custom.getString("image")) {
+                                                case "ferita_chirurgica_con_infiammazione.jpeg":
+                                                    image_view.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ferita_chirurgica_con_infiammazione));
+                                                    break;
+                                            }
+                                        }
                                     } catch (JSONException e) {
                                         Log.e(TAG, "onResponse: " + e.getMessage());
                                     }
@@ -156,6 +174,9 @@ public class MainActivity extends AppCompatActivity {
             public void onError(String s) {
             }
         });
+
+        image_view = findViewById(R.id.image_view);
+        image_view.setImageIcon(null);
 
         speak_button = findViewById(R.id.speak_button);
         speak_button.setOnClickListener(view -> {
