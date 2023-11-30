@@ -17,6 +17,12 @@
         android:theme="@style/Theme.SMILEApp"
         tools:targetApi="31">
         <activity
+            android:name=".TopicActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InitActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

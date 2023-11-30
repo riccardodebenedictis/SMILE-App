@@ -189,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         client = getUnsafeOkHttpClient();
+
+        startActivity(new android.content.Intent(this, InitActivity.class));
     }
 
     @Override
