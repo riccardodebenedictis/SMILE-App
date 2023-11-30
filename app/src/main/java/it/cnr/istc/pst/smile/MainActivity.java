@@ -17,6 +17,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.mlkit.common.model.DownloadConditions;
+import com.google.mlkit.nl.translate.TranslateLanguage;
+import com.google.mlkit.nl.translate.Translation;
+import com.google.mlkit.nl.translate.Translator;
+import com.google.mlkit.nl.translate.TranslatorOptions;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private TextToSpeech textToSpeech;
     private ImageView image_view;
     private Button speak_button;
+    Translator translator = Translation.getClient(new TranslatorOptions.Builder().setSourceLanguage(TranslateLanguage.ENGLISH).setTargetLanguage(TranslateLanguage.ITALIAN).build());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +197,13 @@ public class MainActivity extends AppCompatActivity {
 
         client = getUnsafeOkHttpClient();
 
+        DownloadConditions conditions = new DownloadConditions.Builder().requireWifi().build();
+        translator.downloadModelIfNeeded(conditions).addOnSuccessListener(v -> {
+            Log.d(TAG, "onCreate: Model downloaded");
+            translator.translate("Hello world").addOnSuccessListener(s -> Log.d(TAG, "onCreate: " + s));
+        }).addOnFailureListener(e -> Log.e(TAG, "onCreate: " + e.getMessage()));
+
+        startActivity(new android.content.Intent(this, TopicActivity.class));
         startActivity(new android.content.Intent(this, InitActivity.class));
     }
 
