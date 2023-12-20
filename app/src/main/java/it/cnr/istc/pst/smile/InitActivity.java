@@ -4,12 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class InitActivity extends AppCompatActivity {
 
-    Button colostomia_button;
-    Button ileostomia_button;
-    Button urostomia_button;
+    ImageButton colostomia_button;
+    ImageButton ileostomia_button;
+    ImageButton urostomia_button;
     Button other_button;
 
     @Override
@@ -22,6 +23,15 @@ public class InitActivity extends AppCompatActivity {
         urostomia_button = findViewById(R.id.urostomia_button);
         other_button = findViewById(R.id.other_stomia_button);
 
+        colostomia_button.setOnClickListener(v -> {
+            finish();
+        });
+        ileostomia_button.setOnClickListener(v -> {
+            finish();
+        });
+        urostomia_button.setOnClickListener(v -> {
+            finish();
+        });
         other_button.setOnClickListener(v -> {
             finish();
         });

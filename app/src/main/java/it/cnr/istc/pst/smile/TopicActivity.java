@@ -27,6 +27,21 @@ public class TopicActivity extends AppCompatActivity {
         drugs_and_creams_button = findViewById(R.id.drugs_and_creams_button);
         other_topic_button = findViewById(R.id.other_topic_button);
 
+        diet_button_button.setOnClickListener(v -> {
+            finish();
+        });
+        physical_activity_button.setOnClickListener(v -> {
+            finish();
+        });
+        bag_replacement_button.setOnClickListener(v -> {
+            finish();
+        });
+        infection_and_risks_button.setOnClickListener(v -> {
+            finish();
+        });
+        drugs_and_creams_button.setOnClickListener(v -> {
+            finish();
+        });
         other_topic_button.setOnClickListener(v -> {
             finish();
         });

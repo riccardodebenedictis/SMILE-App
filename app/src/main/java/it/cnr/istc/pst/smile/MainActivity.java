@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                                     try {
                                         Toast.makeText(MainActivity.this, response_body.getString("text"), Toast.LENGTH_SHORT).show();
                                         textToSpeech.speak(response_body.getString("text"), TextToSpeech.QUEUE_FLUSH, null, null);
-                                        image_view.setImageIcon(null);
+                                        image_view.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.favicon));
                                     } catch (JSONException e) {
                                         Log.e(TAG, "onResponse: " + e.getMessage());
                                     }
@@ -183,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         image_view = findViewById(R.id.image_view);
-        image_view.setImageIcon(null);
 
         speak_button = findViewById(R.id.speak_button);
         speak_button.setOnClickListener(view -> {
