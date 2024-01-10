@@ -4,14 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class TopicActivity extends AppCompatActivity {
 
-    Button diet_button_button;
-    Button physical_activity_button;
-    Button bag_replacement_button;
-    Button infection_and_risks_button;
-    Button drugs_and_creams_button;
+    ImageButton diet_button_button;
+    ImageButton physical_activity_button;
+    ImageButton bag_replacement_button;
+    ImageButton infection_and_risks_button;
+    ImageButton drugs_and_creams_button;
     Button other_topic_button;
 
 

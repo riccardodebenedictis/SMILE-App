@@ -6,7 +6,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                                 runOnUiThread(() -> {
                                     try {
                                         Toast.makeText(MainActivity.this, response_body.getString("text"), Toast.LENGTH_SHORT).show();
-                                        textToSpeech.speak(response_body.getString("text"), TextToSpeech.QUEUE_FLUSH, null, null);
+                                        textToSpeech.speak(response_body.getString("text"), TextToSpeech.QUEUE_FLUSH, null, "42");
                                         image_view.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.favicon));
                                     } catch (JSONException e) {
                                         Log.e(TAG, "onResponse: " + e.getMessage());
@@ -130,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
                                                     image_view.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ferita_chirurgica_con_infiammazione));
                                                     break;
                                             }
+                                        }
+                                        if (custom.has("video")) {
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(custom.getString("video"))));
                                         }
                                     } catch (JSONException e) {
                                         Log.e(TAG, "onResponse: " + e.getMessage());
@@ -158,27 +163,55 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        textToSpeech = new TextToSpeech(this, status -> {
+        textToSpeech = new TextToSpeech(getApplicationContext(), status -> {
             if (status == TextToSpeech.SUCCESS) {
-                int result = textToSpeech.setLanguage(Locale.getDefault());
-                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Log.d(TAG, "onCreate: Language not supported");
+                switch (textToSpeech.setLanguage(Locale.getDefault())) {
+                    case TextToSpeech.LANG_MISSING_DATA:
+                        Log.e(TAG, "onCreate: Language missing data");
+                        break;
+                    case TextToSpeech.LANG_NOT_SUPPORTED:
+                        Log.e(TAG, "onCreate: Language not supported");
+                        break;
+                    case TextToSpeech.LANG_AVAILABLE:
+                        Log.d(TAG, "onCreate: Language available");
+                        break;
+                    case TextToSpeech.LANG_COUNTRY_AVAILABLE:
+                        Log.d(TAG, "onCreate: Language country available");
+                        break;
+                    case TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE:
+                        Log.d(TAG, "onCreate: Language country var available");
+                        break;
+                    default:
+                        Log.d(TAG, "onCreate: Language unknown");
+                        break;
                 }
+            } else {
+                Log.e(TAG, "onCreate: Initialization failed");
             }
         });
         textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
-            public void onStart(String s) {
-                speak_button.setEnabled(false);
+            public void onStart(String utteranceId) {
+                Log.d(TAG, "onStart: " + utteranceId);
+                runOnUiThread(() -> speak_button.setEnabled(false));
             }
 
             @Override
-            public void onDone(String s) {
-                speak_button.setEnabled(true);
+            public void onDone(String utteranceId) {
+                Log.d(TAG, "onDone: " + utteranceId);
+                runOnUiThread(() -> speak_button.setEnabled(true));
             }
 
             @Override
-            public void onError(String s) {
+            public void onError(String utteranceId) {
+                Log.e(TAG, "onError: " + utteranceId);
+                runOnUiThread(() -> speak_button.setEnabled(true));
+            }
+
+            @Override
+            public void onError(String utteranceId, int errorCode) {
+                Log.e(TAG, "onError: " + utteranceId + " " + errorCode);
+                runOnUiThread(() -> speak_button.setEnabled(true));
             }
         });
 
@@ -210,8 +243,15 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ora posso ascoltare", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        speechRecognizer.destroy();
+        textToSpeech.shutdown();
     }
 
     private static OkHttpClient getUnsafeOkHttpClient() {

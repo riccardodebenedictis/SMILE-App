@@ -6,56 +6,61 @@
     android:layout_height="match_parent"
     tools:context=".TopicActivity">
 
-    <Button
+    <ImageButton
         android:id="@+id/diet_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Alimentazione"
-        app:icon="@drawable/food_icon"
+        android:backgroundTint="@color/my_light_primary"
+        android:scaleType="fitCenter"
+        android:src="@drawable/food_icon"
         app:layout_constraintBottom_toTopOf="@+id/bag_replacement_button"
         app:layout_constraintEnd_toStartOf="@id/physical_activity_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/physical_activity_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Attività fisica"
-        app:icon="@drawable/physical_activity"
+        android:backgroundTint="@color/my_light_primary"
+        android:scaleType="fitCenter"
+        android:src="@drawable/physical_activity"
         app:layout_constraintBottom_toTopOf="@+id/infection_and_risks_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/diet_button"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/bag_replacement_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Sostituzione sacca"
-        app:icon="@drawable/bag"
+        android:backgroundTint="@color/my_light_primary"
+        android:scaleType="fitCenter"
+        android:src="@drawable/bag"
         app:layout_constraintBottom_toTopOf="@+id/drugs_and_creams_button"
         app:layout_constraintEnd_toStartOf="@+id/infection_and_risks_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/diet_button" />
 
-    <Button
+    <ImageButton
         android:id="@+id/infection_and_risks_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Infezione e vari rischi"
-        app:icon="@drawable/virus"
+        android:backgroundTint="@color/my_light_primary"
+        android:scaleType="fitCenter"
+        android:src="@drawable/virus"
         app:layout_constraintBottom_toTopOf="@+id/other_topic_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bag_replacement_button"
         app:layout_constraintTop_toBottomOf="@id/physical_activity_button" />
 
-    <Button
+    <ImageButton
         android:id="@+id/drugs_and_creams_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Farmaci e creme"
-        app:icon="@drawable/medicine"
+        android:backgroundTint="@color/my_light_primary"
+        android:scaleType="fitCenter"
+        android:src="@drawable/medicine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/other_topic_button"
         app:layout_constraintStart_toStartOf="parent"
